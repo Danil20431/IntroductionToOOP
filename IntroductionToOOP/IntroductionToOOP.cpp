@@ -59,15 +59,31 @@ public:
     }
 
     // Operators
-    void operator=(const Point& other)
+    Point& operator=(const Point& other)
     {
         this->x = other.x;
         this->y = other.y;
         cout << "CopyAssignment:\t" << this << endl;
+        return *this;
+    }
+
+    Point& operator++()
+    {
+        this->x++;
+        this->y++;
+        return *this; // Возврат изменённого значения
+    }
+
+    Point operator++(int)
+    {
+        Point old = *this; //Сохраняем старое значение объекта
+        x++;
+        y++;
+        return old;
     }
 
     // Methods
-    double distance(Point other)
+    double distance(const Point& other)const
     {
         //other - другой (другая точка)
         double x_distance = this->x - other.x;
@@ -84,18 +100,28 @@ public:
 };
 
 //#define STRUCT_POINT
-#define CONSTRUCTORS_CHECK
+//#define CONSTRUCTORS_CHECK
 //#define DISTANCE_CHECK
+//#define ASSIGNMENT_CHECK
 
-double distance(Point A, Point B)
+double distance(const Point& A, const Point& B)
 {
     double x_distance = A.get_x() - B.get_x();
     double y_distance = A.get_y() - B.get_y();
     return sqrt(x_distance * x_distance + y_distance * y_distance);
 }
 
+Point operator+(const Point& left, const Point& right)
+{
+    Point result;
+    result.set_x(left.get_x() + right.get_x());
+    result.set_y(left.get_y() + right.get_y());
+    return result;
+}
+
 //Point G - глобальный объект.
 int g; //Глобальная переменная. Осуждается
+
 
 int main()
 {
@@ -147,13 +173,35 @@ int main()
 
     Point A(2, 3);
     Point B(3, 4);
+    cout << "\n-------------------------------\n";
     cout << "Расстояние от точки A до B: " << A.distance(B) << endl;
+    cout << "\n-------------------------------\n";
     cout << "Расстояние от точки A до B: " << B.distance(A) << endl;
+    cout << "\n-------------------------------\n";
 
     cout << "Расстояние между точками A и B: " << distance(A, B) << endl;
+    cout << "\n-------------------------------\n";
     cout << "Расстояние между точками B и A: " << distance(B, A) << endl;
+    cout << "\n-------------------------------\n";
 
 #endif // DISTANCE_CHECK
+
+#ifdef ASSIGNMENT_CHECK
+    Point A, B, C;
+    cout << "\n----------------------------------------------\n";
+    A = B = C = Point(2, 3); // Явно вызываем конструктор который временно создаёт безымянный объект
+    cout << "\n----------------------------------------------\n";
+    A.print();
+    B.print();
+    C.print();
+#endif // ASSIGNMENT_CHECK
+
+    Point A(2, 3);
+    Point B(4, 5);
+    Point C = A + B;
+    C.print();
+    C++;
+    C.print();
 
     return 0;
 }
