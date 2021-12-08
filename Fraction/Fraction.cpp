@@ -71,9 +71,24 @@ public:
         cout << "Destructor:\t" << this << endl;
     }
     //      Operators:
+    Fraction& operator=(const Fraction& other)
+    {
+        this->integer = other.integer;
+        this->numerator = other.numerator;
+        this->denominator = other.denominator;
+        cout << "CopyAssignment:\t" << this << endl;
+        return *this;
+    }
+
     Fraction& operator*=(const Fraction& other)
     {
         return *this = *this * other;
+    }
+
+    //       Type-cast operators:
+    operator int()const
+    {
+        return integer;
     }
 
     //      Methods:
@@ -168,6 +183,11 @@ Fraction operator/(Fraction left, Fraction right)
 }
 
 //#define CONSTRUCTORS_CHEC
+//#define OPERATORS_CHECK
+//#define TYPE_CONVERSIONS_BASICS 
+//#define CONVERSIONS_FROM_OTHER_TO_CLASS
+
+
 
 int main()
 {
@@ -186,6 +206,7 @@ int main()
     D.print();
 #endif // CONSTRUCTORS_CHEC
 
+#ifdef OPERATORS_CHECK
     double a = 2.5;
     double b = 3.4;
     double c = a * b;
@@ -206,6 +227,41 @@ int main()
 
     A *= B;
     A.print();
+#endif // OPERATORS_CHEK
+
+#ifdef TYPE_CONVERSIONS_BASICS 
+
+    int a = 2;   // без преобразования
+    double b = 3;// 
+    int c = b;   // 
+    int d = 4.5; // 
+    cout << d << endl;
+
+#endif // TYPE_CONVERSIONS_BASICS 
+
+#ifdef CONVERSIONS_FROM_OTHER_TO_CLASS
+
+    double a = 2; // from int to double
+    Fraction A = 5;// from int to Fraction
+
+    A.print();
+
+    Fraction B; // CopyAssignment
+    B = 8;
+    B.print();
+
+    //Fraction C = 12;  Explicit constructor невозможно вызвать так
+    Fraction C(12);
+
+    operator type()
+    {
+
+    }
+#endif // CONVERSIONS_FROM_OTHER_TO_CLASS
+
+    Fraction A(2);
+    int a = A;
+    cout << a << endl;
 
     return 0;
 }
